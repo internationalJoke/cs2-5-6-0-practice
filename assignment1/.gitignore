@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.env
+workspace/
+*.log
+.DS_Store
+# NOTE: the Claude Code session archive (*.tar.gz) is a deliverable — do not ignore it.

@@ -1,0 +1,22 @@
+services:
+  viewer:
+    build: .
+    image: claude-trajectory-viewer
+    ports:
+      # Bound to the host's loopback only — not reachable from your network.
+      - "127.0.0.1:8787:8787"
+    environment:
+      # Option A (recommended on macOS): run `claude setup-token` on the host and
+      # put the token in .env as CLAUDE_CODE_OAUTH_TOKEN=... (uses your subscription, not an API key).
+      - CLAUDE_CODE_OAUTH_TOKEN=${CLAUDE_CODE_OAUTH_TOKEN:-}
+      # Optional: require a token in the browser (?token=...). Generate with `openssl rand -hex 16`.
+      - AUTH_TOKEN=${AUTH_TOKEN:-}
+      # Optional: override the permission flags passed to `claude -p`.
+      - CLAUDE_PERMISSION_ARGS=${CLAUDE_PERMISSION_ARGS:-}
+    volumes:
+      # The directory Claude works in. Point WORKSPACE at a scratch folder, not your home dir.
+      - ${WORKSPACE:-./workspace}:/workspace
+      # Option B: persistent Claude config/login/sessions (`docker compose run --rm viewer claude /login`).
+      - claude-home:/home/node/.claude
+volumes:
+  claude-home:
